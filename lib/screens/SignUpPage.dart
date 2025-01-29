@@ -78,6 +78,10 @@ class _SignUpState extends State<SignUpPage> {
                 },
                 obscureText: _obscureText,
               ),
+              TextButton(
+                onPressed: _togglePasswordVisibility,
+                child: new Text(_obscureText ? "Show" : "Hide"),
+              ),
               ElevatedButton(
                 onPressed: () {
                   if (_formKey.currentState!.validate()) {
