@@ -8,8 +8,72 @@ class HomePage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: appBar(),
-      body: const Center(
-        child: Text('Welcome to Elbisikleta!'),
+      backgroundColor: Colors.white,
+      body: ListView(
+        children: [
+          _searchField(),
+        ],
+      )
+    );
+  }
+
+  Container _searchField(){
+    return Container(
+      margin: EdgeInsets.only(top: 40, left: 20, right: 20),
+      decoration: BoxDecoration(
+        boxShadow: [
+          BoxShadow(
+            color: Color(0xff1D1617).withValues(alpha: 0.10),
+            spreadRadius: 0,
+            blurRadius: 7,
+          ),
+        ]
+      ),
+      child: TextField(
+        decoration: InputDecoration(
+          filled: true,
+          fillColor: Colors.white,
+          contentPadding: EdgeInsets.all(15),
+          hintText: 'Search for bikes',
+          hintStyle: TextStyle(
+            color: Color(0xffDDDADA),
+            fontSize: 14,
+          ),
+          prefixIcon: Padding(
+            padding: const EdgeInsets.all(12),
+            child: SvgPicture.asset('assets/icons/Search.svg',
+              height: 20,
+              width: 20,
+            ),
+          ),
+          suffixIcon: Container(
+            width: 100,
+            child: IntrinsicHeight(
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.end,
+                children: [
+                  VerticalDivider(
+                    color: Colors.black,
+                    indent: 10,
+                    endIndent: 10,
+                    thickness: 0.1,
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.all(10),
+                    child: SvgPicture.asset('assets/icons/Filter.svg',
+                      height: 25,
+                      width: 25,
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ),
+          border: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(15),
+            borderSide: BorderSide.none
+          )
+        ),
       ),
     );
   }
