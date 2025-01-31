@@ -1,9 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import '../controllers/user_controller.dart';
 
-class HomePage extends StatelessWidget {
+class HomePage extends StatefulWidget {
   const HomePage({super.key});
 
+  @override
+  State<HomePage> createState() => _HomePageState();
+}
+
+class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -12,8 +18,58 @@ class HomePage extends StatelessWidget {
       body: ListView(
         children: [
           _searchField(),
+          _userProfile(),
         ],
       )
+    );
+  }
+
+  Container _userProfile(){
+    print(UserController.user?.displayName);
+    return Container(
+      margin: EdgeInsets.only(top: 20, left: 20, right: 20),
+      child: Row(
+        children: [
+          Container(
+            height: 60,
+            width: 60,
+            decoration: BoxDecoration(
+              color: Color(0xffE7E8E8),
+              borderRadius: BorderRadius.circular(10),
+            ),
+            child: CircleAvatar(
+              foregroundImage: NetworkImage(UserController.user?.photoURL ?? ''),
+            ),
+          ),
+          SizedBox(width: 20),
+          Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text('Hello,',
+                style: TextStyle(
+                  color: Color(0xff1D1617),
+                  fontSize: 14,
+                  fontWeight: FontWeight.w400,
+                ),
+              ),
+              Text(UserController.user?.displayName ?? 'NONE',
+                style: TextStyle(
+                  color: Color(0xff1D1617),
+                  fontSize: 18,
+                  fontWeight: FontWeight.w600,
+                ),
+              ),
+            ],
+          ),
+          Spacer(),
+          ElevatedButton(onPressed: () async {
+            await UserController.signOut();
+            if (mounted) {
+              Navigator.of(context).pushReplacementNamed('/sign-in');
+            }
+          }, child: Text('Sign Out')),
+        ],
+      ),
     );
   }
 

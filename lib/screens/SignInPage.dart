@@ -1,80 +1,71 @@
+import 'package:elbisikleta/controllers/user_controller.dart';
+import 'package:elbisikleta/screens/HomePage.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:iconly/iconly.dart';
+
 
 class SignInPage extends StatefulWidget {
-  const SignInPage({Key? key}) : super(key: key);
+  const SignInPage({super.key});
 
   @override
-  State<SignInPage> createState() => _SignInState();
+  State<SignInPage> createState() => _SignInPageState();
 }
 
-class _SignInState extends State<SignInPage> {
-  final _formKey = GlobalKey<FormState>();
-
-  TextEditingController emailController = TextEditingController();
-  TextEditingController passwordController = TextEditingController();
-
-  bool _obscureText = true;
-
-  void _togglePasswordVisibility() {
-    setState(() {
-      _obscureText = !_obscureText;
-    });
-  }
-
+class _SignInPageState extends State<SignInPage> {
   @override
   Widget build(BuildContext context) {
+    final textTheme = Theme.of(context).textTheme;
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('Sign In'),
-      ),
-      body: Padding(
-        padding: const EdgeInsets.all(16.0),
-        child: Form(
-          key: _formKey,
+      body: SafeArea(
+        minimum: const EdgeInsets.all(20),
+        child: Center(
           child: Column(
             children: [
-              TextFormField(
-                controller: emailController,
-                decoration: const InputDecoration(
-                  labelText: 'Email',
+              const Spacer(),
+              ConstrainedBox(
+                constraints: const BoxConstraints(maxWidth: 380),
+                child: Image.asset('assets/images/bicycle.png'),
+              ),
+              const Spacer(),
+              Text(
+                'Welcome to Elbisikleta, Ride with us!',
+                style:
+                    textTheme.titleLarge?.copyWith(fontWeight: FontWeight.bold),
+              ),
+              const Padding(
+                padding: EdgeInsets.only(top: 30, bottom: 30),
+                child: Text(
+                  "Rent or put your own bikes for rent. It's easy and fun!",
+                  textAlign: TextAlign.center,
                 ),
-                validator: (value) {
-                  if (value == null || value.isEmpty) {
-                    return 'Please enter your email';
-                  }
-                  return null;
-                },
               ),
-              TextFormField(
-                controller: passwordController,
-                decoration: const InputDecoration(
-                  labelText: 'Password',
-                ),
-                validator: (value) {
-                  if (value == null || value.isEmpty || value.length < 6) {
-                    return 'Please enter your password';
-                  }
-                  return null;
-                },
-                onSaved: (value) {
-                  passwordController.text = value!;
-                },
-                obscureText: _obscureText,
-              ),
-              TextButton(
-                onPressed: _togglePasswordVisibility,
-                child: new Text(_obscureText ? "Show" : "Hide"),
-              ),
-              ElevatedButton(
-                onPressed: () {
-                  if (_formKey.currentState!.validate()) {
-                    ScaffoldMessenger.of(context).showSnackBar(
-                      const SnackBar(content: Text('Processing Data')),
-                    );
+              /**/
+              FilledButton.tonalIcon(
+                onPressed: () async {
+                  try {
+                    final user = await UserController.loginWithGoogle();
+                    if (user != null && mounted) {
+                      Navigator.of(context).pushReplacement(MaterialPageRoute(
+                          builder: (context) => const HomePage()));
+                    }
+                  } on FirebaseAuthException catch (error) {
+                    print(error.message);
+                    ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                        content: Text(
+                      error.message ?? "Something went wrong",
+                    )));
+                  } catch (error) {
+                    print(error);
+                    ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                        content: Text(
+                      error.toString(),
+                    )));
                   }
                 },
-                child: const Text('Submit'),
-              ),
+                icon: const Icon(IconlyLight.login),
+                label: const Text("Continue with Google"),
+              )
             ],
           ),
         ),

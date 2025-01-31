@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "113551519405",
+    "project_id": "elbisikleta-5ffd8",
+    "storage_bucket": "elbisikleta-5ffd8.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:113551519405:android:2ee228a9f7cb7edd1aa024",
+        "android_client_info": {
+          "package_name": "com.example.elbisikleta"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBf6q280VpabF_x7u3dTQGC7n9qSeItMy8"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
