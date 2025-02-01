@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import '../controllers/user_controller.dart';
+import 'package:google_nav_bar/google_nav_bar.dart';
+import 'package:line_icons/line_icons.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -10,6 +12,9 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
+  int bottomIndex = 0;
+  TabController? _tabController;
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -21,7 +26,49 @@ class _HomePageState extends State<HomePage> {
           _searchField(),
           _popularBikes(),
         ],
-      )
+      ),
+      bottomNavigationBar: _bottomNavigationBar(),
+    );
+  }
+
+  Container _bottomNavigationBar() {
+    return Container(
+      height: 72,
+      padding: EdgeInsets.symmetric(horizontal: 16),
+      color: Colors.white,
+      child: GNav(
+        selectedIndex: bottomIndex,
+        onTabChange: (index) {
+          setState(() {
+            bottomIndex = index;
+          });
+        },
+        curve: Curves.easeOutExpo,
+        duration: Duration(milliseconds: 250),
+        gap: 2,
+        activeColor: Colors.black,
+        iconSize: 24,
+        tabBackgroundColor: Color(0xffE7E8E8),
+        padding: EdgeInsets.symmetric(horizontal: 20, vertical: 5),
+        tabs: [
+          GButton(
+            icon: LineIcons.home,
+            text: 'Home',
+          ),
+          GButton(
+            icon: LineIcons.bicycle,
+            text: 'Bikes',
+          ),
+          GButton(
+            icon: LineIcons.map,
+            text: 'Map',
+          ),
+          GButton(
+            icon: LineIcons.user,
+            text: 'Profile',
+          ),
+        ]
+      ),
     );
   }
 
