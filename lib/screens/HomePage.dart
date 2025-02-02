@@ -3,6 +3,7 @@ import 'package:flutter_svg/flutter_svg.dart';
 import '../controllers/user_controller.dart';
 import 'package:google_nav_bar/google_nav_bar.dart';
 import 'package:line_icons/line_icons.dart';
+import 'package:elbisikleta/screens/BikeCard.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -91,10 +92,10 @@ class _HomePageState extends State<HomePage> {
             child: ListView(
               scrollDirection: Axis.horizontal,
               children: [
-                _bikeCard('assets/images/bike1.png', 'Bike 1', 'Mountain Bike', '4.5', '20'),
-                _bikeCard('assets/images/bike2.png', 'Bike 2', 'Mountain Bike', '4.5', '20'),
-                _bikeCard('assets/images/bike3.png', 'Bike 3', 'Mountain Bike', '4.5', '20'),
-                _bikeCard('assets/images/bike4.png', 'Bike 4', 'Mountain Bike', '4.5', '20'),
+                BikeCard(image:'assets/images/bike1.png', name: 'Bike 1', type: 'Mountain Bike', rating: '4.5', price: '20', onTap: () {print('Card tapped');},),
+                BikeCard(image:'assets/images/bike2.png', name: 'Bike 2', type: 'Mountain Bike', rating: '4.5', price: '20', onTap: () {print('Card tapped');},),
+                BikeCard(image:'assets/images/bike3.png', name: 'Bike 3', type: 'Mountain Bike', rating: '4.5', price: '20', onTap: () {print('Card tapped');},),
+                BikeCard(image:'assets/images/bike4.png', name: 'Bike 4', type: 'Mountain Bike', rating: '4.5', price: '20', onTap: () {print('Card tapped');},),
               ],
             ),
           ),
@@ -103,89 +104,89 @@ class _HomePageState extends State<HomePage> {
     );
   }
 
-  Container _bikeCard(String image, String name, String type, String rating, String price){
-    return Container(
-      margin: EdgeInsets.only(right: 20),
-      width: 150,
-      decoration: BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.circular(15),
-        boxShadow: [
-          BoxShadow(
-            color: Color(0xff1D1617).withValues(alpha: 0.10),
-            spreadRadius: 0,
-            blurRadius: 7,
-          ),
-        ]
-      ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Container(
-            height: 100,
-            width: 150,
-            decoration: BoxDecoration(
-              borderRadius: BorderRadius.only(
-                topLeft: Radius.circular(15),
-                topRight: Radius.circular(15),
-              ),
-              image: DecorationImage(
-                image: AssetImage(image),
-                fit: BoxFit.cover,
-              ),
-            ),
-          ),
-          Padding(
-            padding: const EdgeInsets.all(10),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(name,
-                  style: TextStyle(
-                    color: Color(0xff1D1617),
-                    fontSize: 14,
-                    fontWeight: FontWeight.w600,
-                  ),
-                ),
-                Text(type,
-                  style: TextStyle(
-                    color: Color(0xff1D1617),
-                    fontSize: 12,
-                    fontWeight: FontWeight.w400,
-                  ),
-                ),
-                SizedBox(height: 10),
-                Row(
-                  children: [
-                    SvgPicture.asset('assets/icons/star.svg',
-                      height: 15,
-                      width: 15,
-                    ),
-                    SizedBox(width: 5),
-                    Text(rating,
-                      style: TextStyle(
-                        color: Color(0xff1D1617),
-                        fontSize: 12,
-                        fontWeight: FontWeight.w400,
-                      ),
-                    ),
-                    Spacer(),
-                    Text('\$$price',
-                      style: TextStyle(
-                        color: Color(0xff1D1617),
-                        fontSize: 12,
-                        fontWeight: FontWeight.w600,
-                      ),
-                    ),
-                  ],
-                ),
-              ],
-            ),
-          ),
-        ],
-      ),
-    );
-  }
+  // Container _bikeCard(String image, String name, String type, String rating, String price){
+  //   return Container(
+  //     margin: EdgeInsets.only(right: 20),
+  //     width: 150,
+  //     decoration: BoxDecoration(
+  //       color: Colors.white,
+  //       borderRadius: BorderRadius.circular(15),
+  //       boxShadow: [
+  //         BoxShadow(
+  //           color: Color(0xff1D1617).withValues(alpha: 0.10),
+  //           spreadRadius: 0,
+  //           blurRadius: 7,
+  //         ),
+  //       ]
+  //     ),
+  //     child: Column(
+  //       crossAxisAlignment: CrossAxisAlignment.start,
+  //       children: [
+  //         Container(
+  //           height: 100,
+  //           width: 150,
+  //           decoration: BoxDecoration(
+  //             borderRadius: BorderRadius.only(
+  //               topLeft: Radius.circular(15),
+  //               topRight: Radius.circular(15),
+  //             ),
+  //             image: DecorationImage(
+  //               image: AssetImage(image),
+  //               fit: BoxFit.cover,
+  //             ),
+  //           ),
+  //         ),
+  //         Padding(
+  //           padding: const EdgeInsets.all(10),
+  //           child: Column(
+  //             crossAxisAlignment: CrossAxisAlignment.start,
+  //             children: [
+  //               Text(name,
+  //                 style: TextStyle(
+  //                   color: Color(0xff1D1617),
+  //                   fontSize: 14,
+  //                   fontWeight: FontWeight.w600,
+  //                 ),
+  //               ),
+  //               Text(type,
+  //                 style: TextStyle(
+  //                   color: Color(0xff1D1617),
+  //                   fontSize: 12,
+  //                   fontWeight: FontWeight.w400,
+  //                 ),
+  //               ),
+  //               SizedBox(height: 10),
+  //               Row(
+  //                 children: [
+  //                   SvgPicture.asset('assets/icons/star.svg',
+  //                     height: 15,
+  //                     width: 15,
+  //                   ),
+  //                   SizedBox(width: 5),
+  //                   Text(rating,
+  //                     style: TextStyle(
+  //                       color: Color(0xff1D1617),
+  //                       fontSize: 12,
+  //                       fontWeight: FontWeight.w400,
+  //                     ),
+  //                   ),
+  //                   Spacer(),
+  //                   Text('\$$price',
+  //                     style: TextStyle(
+  //                       color: Color(0xff1D1617),
+  //                       fontSize: 12,
+  //                       fontWeight: FontWeight.w600,
+  //                     ),
+  //                   ),
+  //                 ],
+  //               ),
+  //             ],
+  //           ),
+  //         ),
+  //       ],
+  //     ),
+  //   );
+  // }
 
   Container _userProfile(){
     return Container(
