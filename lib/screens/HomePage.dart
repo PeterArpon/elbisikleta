@@ -188,7 +188,6 @@ class _HomePageState extends State<HomePage> {
   }
 
   Container _userProfile(){
-    print(UserController.user?.displayName);
     return Container(
       margin: EdgeInsets.only(top: 20, left: 20, right: 20),
       child: Row(
