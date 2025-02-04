@@ -24,11 +24,45 @@ class _HomePageState extends State<HomePage> {
       body: ListView(
         children: [
           _userProfile(),
+          _addBike(),
           _searchField(),
           _popularBikes(),
         ],
       ),
       bottomNavigationBar: _bottomNavigationBar(),
+    );
+  }
+
+  GestureDetector _addBike() {
+    return GestureDetector(
+      onTap: () {
+        print('Add bike tapped');
+      },
+      child: Container(
+        margin: EdgeInsets.only(top: 20, left: 20, right: 20),
+        height: 50,
+        decoration: BoxDecoration(
+          color: Colors.greenAccent,
+          borderRadius: BorderRadius.circular(15),
+        ),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Icon(LineIcons.plusCircle,
+              size: 36,
+              color: Color(0xff1D1617),
+            ),
+            SizedBox(height: 5),
+            Text('Add a bike',
+              style: TextStyle(
+                color: Color(0xff1D1617),
+                fontSize: 16,
+                fontWeight: FontWeight.w600,
+              ),
+            ),
+          ],
+        ),
+      ),
     );
   }
 
@@ -238,7 +272,7 @@ class _HomePageState extends State<HomePage> {
 
   Container _searchField(){
     return Container(
-      margin: EdgeInsets.only(top: 40, left: 20, right: 20),
+      margin: EdgeInsets.only(top: 20, left: 20, right: 20),
       decoration: BoxDecoration(
         boxShadow: [
           BoxShadow(
