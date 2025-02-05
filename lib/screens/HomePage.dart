@@ -1,3 +1,4 @@
+import 'package:elbisikleta/screens/AddBikePage.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import '../controllers/user_controller.dart';
@@ -36,7 +37,14 @@ class _HomePageState extends State<HomePage> {
   GestureDetector _addBike() {
     return GestureDetector(
       onTap: () {
-        print('Add bike tapped');
+        // navigate to add bike page
+        final String ownerId = UserController.user!.uid;
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => AddBikePage(ownerId: ownerId),
+          ),
+        );
       },
       child: Container(
         margin: EdgeInsets.only(top: 20, left: 20, right: 20),
@@ -137,90 +145,6 @@ class _HomePageState extends State<HomePage> {
       ),
     );
   }
-
-  // Container _bikeCard(String image, String name, String type, String rating, String price){
-  //   return Container(
-  //     margin: EdgeInsets.only(right: 20),
-  //     width: 150,
-  //     decoration: BoxDecoration(
-  //       color: Colors.white,
-  //       borderRadius: BorderRadius.circular(15),
-  //       boxShadow: [
-  //         BoxShadow(
-  //           color: Color(0xff1D1617).withValues(alpha: 0.10),
-  //           spreadRadius: 0,
-  //           blurRadius: 7,
-  //         ),
-  //       ]
-  //     ),
-  //     child: Column(
-  //       crossAxisAlignment: CrossAxisAlignment.start,
-  //       children: [
-  //         Container(
-  //           height: 100,
-  //           width: 150,
-  //           decoration: BoxDecoration(
-  //             borderRadius: BorderRadius.only(
-  //               topLeft: Radius.circular(15),
-  //               topRight: Radius.circular(15),
-  //             ),
-  //             image: DecorationImage(
-  //               image: AssetImage(image),
-  //               fit: BoxFit.cover,
-  //             ),
-  //           ),
-  //         ),
-  //         Padding(
-  //           padding: const EdgeInsets.all(10),
-  //           child: Column(
-  //             crossAxisAlignment: CrossAxisAlignment.start,
-  //             children: [
-  //               Text(name,
-  //                 style: TextStyle(
-  //                   color: Color(0xff1D1617),
-  //                   fontSize: 14,
-  //                   fontWeight: FontWeight.w600,
-  //                 ),
-  //               ),
-  //               Text(type,
-  //                 style: TextStyle(
-  //                   color: Color(0xff1D1617),
-  //                   fontSize: 12,
-  //                   fontWeight: FontWeight.w400,
-  //                 ),
-  //               ),
-  //               SizedBox(height: 10),
-  //               Row(
-  //                 children: [
-  //                   SvgPicture.asset('assets/icons/star.svg',
-  //                     height: 15,
-  //                     width: 15,
-  //                   ),
-  //                   SizedBox(width: 5),
-  //                   Text(rating,
-  //                     style: TextStyle(
-  //                       color: Color(0xff1D1617),
-  //                       fontSize: 12,
-  //                       fontWeight: FontWeight.w400,
-  //                     ),
-  //                   ),
-  //                   Spacer(),
-  //                   Text('\$$price',
-  //                     style: TextStyle(
-  //                       color: Color(0xff1D1617),
-  //                       fontSize: 12,
-  //                       fontWeight: FontWeight.w600,
-  //                     ),
-  //                   ),
-  //                 ],
-  //               ),
-  //             ],
-  //           ),
-  //         ),
-  //       ],
-  //     ),
-  //   );
-  // }
 
   Container _userProfile(){
     return Container(
