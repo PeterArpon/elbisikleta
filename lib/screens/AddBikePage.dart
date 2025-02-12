@@ -32,11 +32,6 @@ class _AddBikePageState extends State<AddBikePage> {
   List<String> photoUrls = [];
   List<String> chosenPhotoUrls = [];
 
-  // fetch images using bike id
-  Future<void> fetchImages(bikeID) async {
-    await Provider.of<StorageService>(context, listen: false).fetchImages(bikeID);
-  }
-
   Future<void> _submitBike() async {
     if (!_formKey.currentState!.validate()) return;
 
@@ -173,43 +168,14 @@ class _AddBikePageState extends State<AddBikePage> {
                   SizedBox(height: 16),
                   Container(
                     height: 100,
-                    child: Column(
-                      children: [
-                        Consumer<StorageService>(
-                          builder: (context, storageService, child) {
-                            // list of image urls
-                            final List<String> _bikeImages = storageService.getPhotoUrls;
-                            
-                            return Expanded(
-                              child: ListView.builder(
-                                scrollDirection: Axis.horizontal,
-                                itemCount: _bikeImages.length,
-                                itemBuilder: (context, index) {
-                                  return Padding(
-                                    padding: const EdgeInsets.all(8.0),
-                                    child: Image.file(
-                                      File(_bikeImages[index]),
-                                      width: 100,
-                                      height: 100,
-                                      fit: BoxFit.cover,
-                                    ),
-                                  );
-                                },
-                              ),
-                            );
-                          },
-                        ),
-                        ElevatedButton(
+                    child: ElevatedButton(
                           onPressed: () async {
                             final storageService = Provider.of<StorageService>(context, listen: false);
-                            
                             // upload image
                             chosenPhotoUrls = await storageService.pickImages();
                           },
                           child: const Text('Upload Image'),
                         ),
-                      ],
-                    ),
                   ),
                   SizedBox(height: 16),
                   ElevatedButton(

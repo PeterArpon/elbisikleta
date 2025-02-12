@@ -7,45 +7,12 @@ class StorageService with ChangeNotifier {
   // firebase storage instance
   final firebaseStorage = FirebaseStorage.instance;
 
-  // download urls of images
-  List<String> photoUrls = [];
-
   bool _isLoading = false;
   bool _isuploading = false;
 
   // getters
-  List<String> get getPhotoUrls => photoUrls;
   bool get getIsLoading => _isLoading;
   bool get getIsUploading => _isuploading;
-
-  // Read images
-  Future<void> fetchImages(String bikeId) async {
-    try {
-      _isLoading = true;
-      // update the UI
-      notifyListeners();
-
-      photoUrls = [];
-      final ListResult result = await firebaseStorage.ref('bikes/$bikeId').list();
-      final List<Reference> allImages = result.items;
-
-      for (final Reference imageRef in allImages) {
-        final String downloadUrl = await imageRef.getDownloadURL();
-
-        // update photoUrls
-        photoUrls.add(downloadUrl);
-      }
-
-      _isLoading = false;
-      notifyListeners();
-    } catch (error) {
-      _isLoading = false;
-
-      // update the UI
-      notifyListeners();
-      throw error;
-    }
-  }
 
   // to do: delete image
 
@@ -120,7 +87,7 @@ class StorageService with ChangeNotifier {
       // update the UI
       notifyListeners();
 
-      return photoUrls;
+      return newPhotoUrls;
     } catch (error) {
       _isuploading = false;
       // update the UI

@@ -5,6 +5,8 @@ import '../controllers/user_controller.dart';
 import 'package:google_nav_bar/google_nav_bar.dart';
 import 'package:line_icons/line_icons.dart';
 import 'package:elbisikleta/screens/BikeCard.dart';
+import 'package:elbisikleta/models/bike_model.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -16,22 +18,44 @@ class HomePage extends StatefulWidget {
 class _HomePageState extends State<HomePage> {
   int bottomIndex = 0;
   TabController? _tabController;
+  late Future<QuerySnapshot> _bikesFuture;
+
+  @override
+  void initState() {
+    super.initState();
+    _bikesFuture = _fetchBikes();
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: appBar(),
       backgroundColor: Colors.white,
-      body: ListView(
-        children: [
-          _userProfile(),
-          _addBike(),
-          _searchField(),
-          _popularBikes(),
-        ],
+      body: RefreshIndicator(
+        onRefresh: _refreshBikes,
+        child: ListView(
+          children: [
+            _userProfile(),
+            _addBike(),
+            _searchField(),
+            _popularBikes(),
+          ],
+        ),
       ),
       bottomNavigationBar: _bottomNavigationBar(),
     );
+  }
+
+  Future<void> _refreshBikes() async {
+    setState(() {
+      _bikesFuture = _fetchBikes();
+    });
+  }
+
+  Future<QuerySnapshot> _fetchBikes() {
+    Query<Map<String, dynamic>> query = FirebaseFirestore.instance.collection('bikes').where('isAvailable', isEqualTo: true);
+    
+    return query.orderBy('createdAt', descending: true).get();
   }
 
   GestureDetector _addBike() {
@@ -129,17 +153,33 @@ class _HomePageState extends State<HomePage> {
             ),
           ),
           SizedBox(height: 20),
-          Container(
-            height: 200,
-            child: ListView(
-              scrollDirection: Axis.horizontal,
-              children: [
-                BikeCard(image:'assets/images/bike1.png', name: 'Bike 1', type: 'Mountain Bike', rating: '4.5', price: '20', onTap: () {print('Card tapped');},),
-                BikeCard(image:'assets/images/bike2.png', name: 'Bike 2', type: 'Mountain Bike', rating: '4.5', price: '20', onTap: () {print('Card tapped');},),
-                BikeCard(image:'assets/images/bike3.png', name: 'Bike 3', type: 'Mountain Bike', rating: '4.5', price: '20', onTap: () {print('Card tapped');},),
-                BikeCard(image:'assets/images/bike4.png', name: 'Bike 4', type: 'Mountain Bike', rating: '4.5', price: '20', onTap: () {print('Card tapped');},),
-              ],
-            ),
+          FutureBuilder<QuerySnapshot>(
+            future: _bikesFuture,
+            builder: (context, snapshot) {
+              if (snapshot.connectionState == ConnectionState.waiting) {
+                return Center(child: CircularProgressIndicator());
+              }
+
+              if (snapshot.hasError) {
+                return Text('Error: ${snapshot.error}');
+              }
+
+              if (!snapshot.hasData || snapshot.data!.docs.isEmpty) {
+                return Text('No bikes found');
+              }
+
+              return ListView.builder(
+                  shrinkWrap: true,
+                  physics: NeverScrollableScrollPhysics(),
+                  itemCount: snapshot.data!.docs.length,
+                  itemBuilder: (context, index) {
+                    final bike = BikeModel.fromFirestore(snapshot.data!.docs[index]);
+                    return BikeCard(
+                      bike: bike,
+                    );
+                  },
+                );
+            },
           ),
         ],
       ),

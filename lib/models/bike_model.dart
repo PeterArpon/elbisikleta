@@ -27,35 +27,22 @@ class BikeModel {
     required this.updatedAt,
   });
 
-  Map<String, dynamic> toMap() {
-    return {
-      'bikeId': bikeId,
-      'ownerId': ownerId,
-      'modelName': modelName,
-      'description': description,
-      'photoUrls': photoUrls,
-      'costPerHour': costPerHour,
-      'isAvailable': isAvailable,
-      'location': location,
-      'features': features,
-      'createdAt': createdAt,
-      'updatedAt': updatedAt,
-    };
-  }
-
-  factory BikeModel.fromMap(Map<String, dynamic> map) {
+  factory BikeModel.fromFirestore(DocumentSnapshot doc) {
+    final data = doc.data() as Map<String, dynamic>;
     return BikeModel(
-      bikeId: map['bikeId'],
-      ownerId: map['ownerId'],
-      modelName: map['modelName'],
-      description: map['description'],
-      photoUrls: List<String>.from(map['photoUrls']),
-      costPerHour: map['costPerHour'].toDouble(),
-      isAvailable: map['isAvailable'],
-      location: map['location'],
-      features: map['features'] != null ? List<String>.from(map['features']) : null,
-      createdAt: (map['createdAt'] as Timestamp).toDate(),
-      updatedAt: (map['updatedAt'] as Timestamp).toDate(),
+      bikeId: doc.id,
+      ownerId: data['ownerId'],
+      modelName: data['modelName'],
+      description: data['description'],
+      photoUrls: List<String>.from(data['photoUrls']),
+      costPerHour: data['costPerHour'],
+      isAvailable: data['isAvailable'],
+      location: data['location'],
+      features: data['features'] != null
+          ? List<String>.from(data['features'])
+          : null,
+      createdAt: (data['createdAt'] as Timestamp).toDate(),
+      updatedAt: (data['updatedAt'] as Timestamp).toDate(),
     );
   }
 }

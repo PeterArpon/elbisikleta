@@ -1,114 +1,103 @@
+import 'package:elbisikleta/models/bike_model.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
 class BikeCard extends StatelessWidget {
-  final String image;
-  final String name;
-  final String type;
-  final String rating;
-  final String price;
-  final VoidCallback? onTap;
+  final BikeModel bike;
 
-  const BikeCard({
-    Key? key,
-    required this.image,
-    required this.name,
-    required this.type,
-    required this.rating,
-    required this.price,
-    this.onTap,
-  }) : super(key: key);
+  const BikeCard({Key? key, required this.bike}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      onTap: onTap,
-      child: Container(
-        margin: const EdgeInsets.only(right: 20),
-        width: 150,
-        decoration: BoxDecoration(
-          color: Colors.white,
-          borderRadius: BorderRadius.circular(15),
-          boxShadow: [
-            BoxShadow(
-              color: const Color(0xff1D1617)..withValues(alpha: 0.10),
-              spreadRadius: 0,
-              blurRadius: 7,
-            ),
-          ]
-        ),
+      onTap: () {
+        
+      },
+      child: Card(
+        margin: EdgeInsets.only(bottom: 16),
+        clipBehavior: Clip.antiAlias,
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Container(
-              height: 100,
-              width: 150,
-              decoration: BoxDecoration(
-                borderRadius: const BorderRadius.only(
-                  topLeft: Radius.circular(15),
-                  topRight: Radius.circular(15),
-                ),
-                image: DecorationImage(
-                  image: AssetImage(image),
-                  fit: BoxFit.cover,
+            if (bike.photoUrls.isNotEmpty)
+              SizedBox(
+                height: 100,
+                child: PageView.builder(
+                  itemCount: bike.photoUrls.length,
+                  itemBuilder: (context, index) {
+                    return Image.network(
+                      bike.photoUrls[index],
+                      fit: BoxFit.cover,
+                      loadingBuilder: (context, child, loadingProgress) {
+                        if (loadingProgress == null) return child;
+                        return Center(child: CircularProgressIndicator());
+                      },
+                      errorBuilder: (context, error, stackTrace) {
+                        return Icon(Icons.error);
+                      },
+                    );
+                  },
                 ),
               ),
-            ),
             Padding(
-              padding: const EdgeInsets.all(10),
+              padding: EdgeInsets.all(16),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text(
-                    name,
-                    style: const TextStyle(
-                      color: Color(0xff1D1617),
-                      fontSize: 14,
-                      fontWeight: FontWeight.w600,
-                    ),
-                  ),
-                  Text(
-                    type,
-                    style: const TextStyle(
-                      color: Color(0xff1D1617),
-                      fontSize: 12,
-                      fontWeight: FontWeight.w400,
-                    ),
-                  ),
-                  const SizedBox(height: 10),
                   Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      SvgPicture.asset(
-                        'assets/icons/star.svg',
-                        height: 15,
-                        width: 15,
-                      ),
-                      const SizedBox(width: 5),
-                      Text(
-                        rating,
-                        style: const TextStyle(
-                          color: Color(0xff1D1617),
-                          fontSize: 12,
-                          fontWeight: FontWeight.w400,
+                      Expanded(
+                        child: Text(
+                          bike.modelName,
+                          style: Theme.of(context).textTheme.titleLarge,
                         ),
                       ),
-                      const Spacer(),
-                      Text(
-                        '\$$price',
-                        style: const TextStyle(
-                          color: Color(0xff1D1617),
-                          fontSize: 12,
-                          fontWeight: FontWeight.w600,
+                      Container(
+                        padding: EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+                        decoration: BoxDecoration(
+                          color: bike.isAvailable ? Colors.green : Colors.red,
+                          borderRadius: BorderRadius.circular(12),
+                        ),
+                        child: Text(
+                          bike.isAvailable ? 'Available' : 'Not Available',
+                          style: TextStyle(color: Colors.white),
                         ),
                       ),
                     ],
                   ),
+                  SizedBox(height: 8),
+                  Text(
+                    '\$${bike.costPerHour.toStringAsFixed(2)}/hour',
+                    style: Theme.of(context).textTheme.titleMedium,
+                  ),
+                  SizedBox(height: 8),
+                  Text(bike.description),
+                  if (bike.location != null) ...[
+                    SizedBox(height: 8),
+                    Row(
+                      children: [
+                        Icon(Icons.location_on, size: 16),
+                        SizedBox(width: 4),
+                        Text(bike.location!),
+                      ],
+                    ),
+                  ],
+                  if (bike.features != null && bike.features!.isNotEmpty) ...[
+                    SizedBox(height: 8),
+                    Wrap(
+                      spacing: 8,
+                      children: bike.features!.map((feature) => Chip(
+                        label: Text(feature),
+                      )).toList(),
+                    ),
+                  ],
                 ],
               ),
             ),
           ],
         ),
-      ),
+      )
     );
   }
 }
