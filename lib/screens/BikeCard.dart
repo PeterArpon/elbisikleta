@@ -1,6 +1,5 @@
 import 'package:elbisikleta/models/bike_model.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 
 class BikeCard extends StatelessWidget {
   final BikeModel bike;
@@ -11,7 +10,7 @@ class BikeCard extends StatelessWidget {
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () {
-        
+        Navigator.of(context).pushNamed('/view-bike', arguments: bike.bikeId);
       },
       child: Card(
         margin: EdgeInsets.only(bottom: 16),
@@ -68,7 +67,7 @@ class BikeCard extends StatelessWidget {
                   ),
                   SizedBox(height: 8),
                   Text(
-                    '\$${bike.costPerHour.toStringAsFixed(2)}/hour',
+                    'P${bike.costPerHour.toStringAsFixed(2)}/hour',
                     style: Theme.of(context).textTheme.titleMedium,
                   ),
                   SizedBox(height: 8),

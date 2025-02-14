@@ -8,6 +8,8 @@ import 'screens/SignInPage.dart';
 import 'screens/SignUpPage.dart';
 import 'screens/HomePage.dart';
 import 'screens/AddBikePage.dart';
+import 'screens/ViewBikePage.dart';
+import 'models/bike_model.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -38,6 +40,9 @@ class MyApp extends StatelessWidget {
         '/sign-up': (context) => const SignUpPage(),
         '/add-bike': (context) => AddBikePage(
           ownerId: ModalRoute.of(context)!.settings.arguments as String,
+        ),
+        '/view-bike': (context) => ViewBikePage(
+          bikeId: ModalRoute.of(context)!.settings.arguments as String,
         ),
         // '/homepage': (context) => const HomePage(),
         // '/map': (context) => const MapPage(),
